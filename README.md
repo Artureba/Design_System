@@ -1,12 +1,13 @@
 # Documentação do Projeto: Clínica Médica
 
-## 🧩 Desenho Arquitetural
-
 ### Estilo Arquitetural
-O estilo arquitetural escolhido para este projeto é o **Microservices Architecture**, que permite a criação de serviços independentes e escaláveis.
+O estilo arquitetural escolhido para este projeto é a **Arquitetura em Microserviços**, a qual permite a criação de serviços independentes e escaláveis.
 
-### Padrão Arquitetural
-O padrão arquitetural adotado será o **MVC (Model-View-Controller)**, que facilita a separação de responsabilidades e mantém o acoplamento baixo.
+### Padrões Arquitetura
+O padrão arquitetural adotados serão:
+- **MVC (Model-View-Controller)**, que facilita a separação de responsabilidades e mantém o acoplamento baixo.
+- API Gateway para centralizar e rotear as requisições feitas aos microserviços, evitando necessidade do cliente conhecer o endereço de cada serviço.
+- Utilização de token JWT como padrão para autenticação nas requisições HTTP.
 
 ---
 
@@ -24,6 +25,44 @@ O padrão arquitetural adotado será o **MVC (Model-View-Controller)**, que faci
 - **Java com Spring Boot (versão 21)**: Framework principal para desenvolvimento do backend.
 - **JPA (Java Persistence API)**: Para comunicação com o banco de dados.
 - **Lombok**: Para reduzir a verbosidade do código e agilizar o desenvolvimento.
+
+### Diagrama Arquitetural
+> ![DesignSystemImage](https://github.com/user-attachments/assets/c596c716-cdc1-4393-8d57-c095e4f413cf)
+
+#### 🌐 API Gateway
+- Ponto único de entrada para o sistema.
+- Redireciona requisições para os serviços corretos.
+- Pode aplicar políticas de segurança e controle de tráfego.
+
+#### 🔐 Auth Service
+- Responsável pela autenticação de usuários.
+- Gera e valida tokens JWT.
+- Ponto central de segurança para os demais serviços.
+
+#### 📞 Atendente Service
+- Gerencia dados e operações relacionadas a atendentes.
+- Consome e valida JWT para autenticação.
+- Persistência via JPA em banco de dados próprio.
+
+#### 🩺 Doctor Service
+- Gerencia informações de médicos.
+- Acesso protegido por JWT.
+- Comunicação JSON e persistência com JPA.
+
+#### 👤 Client Service
+- Responsável pelo cadastro e gerenciamento de clientes/pacientes.
+- Integração com Auth Service para autenticação.
+- Comunicação via HTTP + JSON.
+
+#### 📅 Appointment Service
+- Controla agendamentos e horários de consultas.
+- Utiliza JWT para autorização.
+- Armazena dados com JPA.
+
+#### 🗂️ Medical Record Service
+- Armazena e gerencia prontuários médicos.
+- Acesso seguro via token JWT.
+- Persistência isolada com JPA.
 
 ---
 
@@ -51,16 +90,27 @@ O padrão arquitetural adotado será o **MVC (Model-View-Controller)**, que faci
 - **Tailwind CSS**: Para estilização e design responsivo.
 - **Axios**: Para comunicação com a API.
 
----
 
-## 🗃️ Dados
+## Dados
 
-### Banco de Dados
-- **PostgreSQL**: Banco de dados relacional escolhido para o projeto.
+### 🗄️ Banco de Dados
 
-### Diagrama de Dados
-> ![DesignSystemImage](https://github.com/user-attachments/assets/c596c716-cdc1-4393-8d57-c095e4f413cf)
+- **SGBD Utilizado**: PostgreSQL – Banco de dados relacional escolhido para o projeto.
 
+#### 📦 Padrão de Nomenclatura
+
+- **Tabelas**:  
+  `TB_NOME_DA_TABELA`
+
+- **Colunas**:
+
+| Prefixo | Significado  | Exemplo         |
+|---------|--------------|-----------------|
+| `NR_`   | Números      | `NR_QUANTIDADE` |
+| `VL_`   | Valores      | `VL_PRECO`      |
+| `NM_`   | Nomes        | `NM_NOME`       |
+| `DS_`   | Descrições   | `DS_DESCRICAO`  |
+| `CD_`   | Códigos      | `CD_CODIGO`     |
 
 ---
 
